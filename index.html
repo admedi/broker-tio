@@ -14,6 +14,41 @@
             margin: auto;
             text-align: center;
         }
+        .cardBox{
+            position: relative;
+            width: 1;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            grid-gap:10px ;
+        }
+        .cardBox .card{
+            position: relative;
+            background: white;
+            padding: 30px;
+            box-shadow: violet;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .cardBox .card .numbers{
+            position: relative;
+            font-weight: 700;
+            font-size: 100px;
+            color: tomato;
+        }
+        .cardBox .card .cardName{
+            color: #000;
+            font-size: 10px;
+            margin-top: 5px;
+        }
+        @media (max-widht:360px){
+             .cardBox .card{
+                padding:0fr;
+                justify-content: stretch;
+             }
+        }
+        
 
 
     </style>
@@ -21,24 +56,43 @@
 <body>
 
     <div id="app">
+        <br>
+        <br>
         <h1>{{mensaje}}</h1>
         <br>
+
         <table class="table table-dark">
             <tr>
-                <td><h2 id="Bitcoin"></h2></td>
+                <td>
+                    <span><h3 id="Bitcoin"></h3></span>
+                    <span><h3 id="Ethereum"></h3></span>
+                     
+                </td>
             </tr>
-            <tr>
-                <td><h2 id="DolarO"></h2></td>
-            </tr>
-            <tr>
-                <td><h2 id="TuBitcoin"></h2></td>
-            </tr>
-            <!-- <tr>
-                <td><h2 id="TuEthereum"></h2></td>
-            </tr> -->
             
-
         </table>
+
+        <div class="cardBox">
+            <div class="card">
+                <div class="numbers"><h2 id="TuBitcoin"></h2></div>
+                <div class="cardName">Total en Bitcoin</div>
+            </div>
+
+            <div class="card">
+                <div class="numbers"><h2 id="TuEthereum"></h2></div>
+                <div class="cardName">Total en Ethereum</div>
+            </div>
+            
+        </div>
+       
+
+
+        <div class="date">
+            <script>
+                var f = new Date();
+                document.write(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
+            </script>
+        </div>
         
 
         <canvas id="myChart"></canvas>
@@ -56,19 +110,30 @@
 
     <script>
 
-        let url= 'https://mindicador.cl/api'
+        let url= 'https://criptoya.com/api/buda/btc/clp/1'
         fetch(url)
         .then(function(response) {
    return response.json();
-}).then(function(dailyIndicators) {
-    document.getElementById("Bitcoin").innerHTML = 'El valor del Bitcoin en dólares es $ ' + dailyIndicators.bitcoin.valor;
-    document.getElementById("DolarO").innerHTML = 'El valor actual del Dólar observado es $ ' + dailyIndicators.dolar.valor;
-    document.getElementById("TuBitcoin").innerHTML = 'El valor de tus Bitcoins es $ ' + (dailyIndicators.dolar.valor * dailyIndicators.bitcoin.valor)*0.000521922489;
-    document.getElementById("TuEthereum").innerHTML = 'El valor de tus Ethereum es $ ' + 0.006688626766; 
+}).then(function(indicators) {
+    document.getElementById("Bitcoin").innerHTML = 'El valor del Bitcoin es $ ' + indicators.ask;
+    document.getElementById("TuBitcoin").innerHTML = '$' + Math.trunc(indicators.ask * 0.000521922489);
+     
 }).catch(function(error) {
   console.log('Requestfailed', error);
 });
             
+    let url2= 'https://criptoya.com/api/buda/eth/clp/1'
+    fetch(url2)
+    .then(function(response) {
+   return response.json();
+}).then(function(indicador) {
+    document.getElementById("TuEthereum").innerHTML = '$' + Math.trunc(indicador.ask *0.006688626766);
+    document.getElementById("Ethereum").innerHTML = 'El valor del Ethereum es $ ' + indicador.ask;
+}).catch(function(error) {
+  console.log('Requestfailed', error);
+});
+
+
 
          
 
@@ -80,6 +145,7 @@
             }
         })
     </script>
+
 </body>
 
 <script>
@@ -90,7 +156,7 @@
             labels:['bitcoin','ethereum'],
             datasets:[{
                 label:'Cripto Divisas',
-                data:[52,48],
+                data:[48,52],
                 backgroundColor:['rgb(66, 134, 244)', 'rgb(74, 135, 72)']
             }]
         }
