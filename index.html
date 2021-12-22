@@ -115,7 +115,7 @@
         .then(function(response) {
    return response.json();
 }).then(function(indicators) {
-    document.getElementById("Bitcoin").innerHTML = 'El valor del Bitcoin es $ ' + indicators.ask;
+    document.getElementById("Bitcoin").innerHTML = 'Valor Bitcoin $ ' + indicators.ask;
     document.getElementById("TuBitcoin").innerHTML = '$' + Math.trunc(indicators.ask * 0.000521922489);
      
 }).catch(function(error) {
@@ -128,7 +128,7 @@
    return response.json();
 }).then(function(indicador) {
     document.getElementById("TuEthereum").innerHTML = '$' + Math.trunc(indicador.ask *0.006688626766);
-    document.getElementById("Ethereum").innerHTML = 'El valor del Ethereum es $ ' + indicador.ask;
+    document.getElementById("Ethereum").innerHTML = 'Valor Ethereum $ ' + indicador.ask;
 }).catch(function(error) {
   console.log('Requestfailed', error);
 });
